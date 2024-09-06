@@ -25,7 +25,7 @@ public class ExampleController {
 
     @GetMapping("/get/{exampleValue}")
     public ApiResponse<ExampleResponse> exampleGet(@PathVariable String exampleValue,
-                                                   @RequestParam String exampleParam) {
+            @RequestParam String exampleParam) {
         ExampleResult result = exampleExampleService.processExample(new ExampleData(exampleValue, exampleParam));
         return ApiResponse.success(new ExampleResponse(result.data()));
     }
