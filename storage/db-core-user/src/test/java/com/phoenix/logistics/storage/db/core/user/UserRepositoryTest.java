@@ -36,7 +36,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindUserById() {
         // 새로운 사용자 저장
-        User user = new User("testuser2", "Password123!", RoleType.HUB_ADMIN);
+        User user = new User("testuser2", "Password123!", RoleType.HUB_MANAGER);
         userRepository.save(user);
 
         // 저장된 사용자 ID로 찾기
