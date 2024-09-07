@@ -1,6 +1,6 @@
-package com.springcloud.eureka.dbcoreuser.repository;
+package com.phoenix.logistics.storage.db.core.user.repository;
 
-import com.springcloud.eureka.dbcoreuser.entity.User;
+import com.phoenix.logistics.storage.db.core.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
