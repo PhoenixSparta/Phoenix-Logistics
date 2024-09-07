@@ -9,8 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("local")  // 로컬 환경에서 H2 DB 테스트
+@ActiveProfiles("local") // 로컬 환경에서 H2 DB 테스트
 class LocalProfileTest {
+
     @Autowired
     private DataSource dataSource;
 
@@ -19,4 +20,5 @@ class LocalProfileTest {
         assertNotNull(dataSource);
         // H2 설정이 제대로 되었는지 확인
     }
+
 }

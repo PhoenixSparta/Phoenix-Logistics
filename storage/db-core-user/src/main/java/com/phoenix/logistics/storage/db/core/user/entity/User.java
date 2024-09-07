@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "p_users")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,6 @@ public class User extends BaseEntity{
 
     @Column(name = "is_delete", nullable = false)
     private Boolean isDelete = false; // 논리적 삭제 여부, 기본값 FALSE
-
-
 
     @Builder
     public User(String username, String password, RoleType role) {

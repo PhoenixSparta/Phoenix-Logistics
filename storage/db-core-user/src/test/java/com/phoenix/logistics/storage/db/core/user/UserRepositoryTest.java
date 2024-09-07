@@ -56,10 +56,8 @@ public class UserRepositoryTest {
         Constructor<User> constructor = User.class.getDeclaredConstructor();
 
         // 기본 생성자가 protected인지 확인
-        assertThrows(IllegalAccessException.class, () -> {
-            // 리플렉션을 통해 기본 생성자를 호출하려고 시도
-            constructor.newInstance();
-        });
+        // 리플렉션을 통해 기본 생성자를 호출하려고 시도
+        assertThrows(IllegalAccessException.class, constructor::newInstance);
     }
 
 }
