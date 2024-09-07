@@ -18,10 +18,9 @@ public class UserRepositoryTest {
     @Test
     public void testSaveUser() {
         // User 엔티티의 커스텀 생성자를 사용하여 객체 생성
-        User user = new User(
-            "testuser",  // username
-            "Test1234!", // password
-            RoleType.MASTER_ADMIN  // role
+        User user = new User("testuser", // username
+                "Test1234!", // password
+                RoleType.MASTER_ADMIN // role
         );
 
         // 데이터베이스에 사용자 저장
@@ -35,11 +34,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindUserById() {
         // 새로운 사용자 저장
-        User user = new User(
-            "testuser2",
-            "Password123!",
-            RoleType.HUB_ADMIN
-        );
+        User user = new User("testuser2", "Password123!", RoleType.HUB_ADMIN);
         userRepository.save(user);
 
         // 저장된 사용자 ID로 찾기
@@ -59,4 +54,5 @@ public class UserRepositoryTest {
         // 아래 코드는 컴파일 오류가 발생하므로 주석 처리 (정상적인 동작)
         // User user = new User(); // 컴파일 오류 발생해야 함
     }
+
 }

@@ -65,4 +65,5 @@ public class User {
         this.isPublic = true;
         this.isDelete = false;
     }
+
 }
