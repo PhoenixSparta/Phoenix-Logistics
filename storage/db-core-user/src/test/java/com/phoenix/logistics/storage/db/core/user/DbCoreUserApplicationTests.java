@@ -1,4 +1,4 @@
-package com.springcloud.eureka.dbcoreuser;
+package com.phoenix.logistics.storage.db.core.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

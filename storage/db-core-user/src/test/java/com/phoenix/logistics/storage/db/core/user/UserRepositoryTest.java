@@ -1,10 +1,12 @@
-package com.springcloud.eureka.dbcoreuser;
+package com.phoenix.logistics.storage.db.core.user;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.springcloud.eureka.dbcoreuser.entity.RoleType;
-import com.springcloud.eureka.dbcoreuser.entity.User;
-import com.springcloud.eureka.dbcoreuser.repository.UserRepository;
+import com.phoenix.logistics.core.enums.RoleType;
+import com.phoenix.logistics.storage.db.core.user.entity.User;
+import com.phoenix.logistics.storage.db.core.user.repository.UserRepository;
+import java.lang.reflect.Constructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -49,10 +51,15 @@ public class UserRepositoryTest {
     // Lombok의 @NoArgsConstructor(access = AccessLevel.PROTECTED)를 통해
     // 기본 생성자가 protected로 설정되었는지 확인하는 테스트
     @Test
-    public void testProtectedConstructor() {
-        // 기본 생성자가 protected이므로 외부에서 호출할 수 없음
-        // 아래 코드는 컴파일 오류가 발생하므로 주석 처리 (정상적인 동작)
-        // User user = new User(); // 컴파일 오류 발생해야 함
+    public void testProtectedConstructor() throws NoSuchMethodException {
+        // User 클래스의 기본 생성자를 가져옴
+        Constructor<User> constructor = User.class.getDeclaredConstructor();
+
+        // 기본 생성자가 protected인지 확인
+        assertThrows(IllegalAccessException.class, () -> {
+            // 리플렉션을 통해 기본 생성자를 호출하려고 시도
+            constructor.newInstance();
+        });
     }
 
 }
