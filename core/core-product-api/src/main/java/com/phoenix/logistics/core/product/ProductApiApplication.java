@@ -1,4 +1,4 @@
-package com.phoenix.logistics.product;
+package com.phoenix.logistics.core.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
