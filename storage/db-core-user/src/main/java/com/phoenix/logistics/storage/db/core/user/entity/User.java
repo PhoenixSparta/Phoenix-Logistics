@@ -1,19 +1,17 @@
-package com.springcloud.eureka.dbcoreuser.entity;
+package com.phoenix.logistics.storage.db.core.user.entity;
 
+import com.phoenix.logistics.core.enums.RoleType;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "p_users")
-public class User {
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,25 +35,7 @@ public class User {
     @Column(name = "is_delete", nullable = false)
     private Boolean isDelete = false; // 논리적 삭제 여부, 기본값 FALSE
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt; // 레코드 생성 시간
 
-    @Column(name = "created_by")
-    private Long createdBy; // 레코드 생성자 (userId)
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt; // 레코드 수정 시간
-
-    @Column(name = "updated_by", length = 100)
-    private Long updatedBy; // 레코드 수정자 (userId)
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt; // 레코드 삭제 시간
-
-    @Column(name = "deleted_by", length = 100)
-    private Long deletedBy; // 레코드 삭제자 (userId)
 
     @Builder
     public User(String username, String password, RoleType role) {
