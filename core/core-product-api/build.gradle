@@ -1,0 +1,18 @@
+bootJar.enabled = true
+jar.enabled = false
+
+dependencies {
+	implementation project(":support:monitoring")
+	implementation project(":support:logging")
+	implementation project(":storage:db-core-product")
+
+	testImplementation project(":tests:api-docs")
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//todo eureka server 생기면 해제
+	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+}
