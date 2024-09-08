@@ -9,9 +9,9 @@ public class Product {
 
     private UUID uuid;
 
-    private UUID manufacturerUUID;
+    private UUID manufacturerUuid;
 
-    private UUID hubUUID;
+    private UUID hubUuid;
 
     private String name;
 

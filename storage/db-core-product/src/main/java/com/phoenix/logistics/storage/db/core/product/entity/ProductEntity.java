@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -19,14 +21,15 @@ import lombok.NoArgsConstructor;
 public class ProductEntity extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "product_uuid")
     private UUID uuid;
 
-    @Column(name = "manufacture_uuid")
-    private UUID manufacturerUUID;
+    @Column(name = "manufacturer_uuid", nullable = false)
+    private UUID manufacturerUuid;
 
-    @Column(name = "hub_uuid")
-    private UUID hubUUID;
+    @Column(name = "hub_uuid", nullable = false)
+    private UUID hubUuuid;
 
     @Column(nullable = false)
     private String name;
@@ -43,8 +46,8 @@ public class ProductEntity extends BaseEntity {
     @Builder
     public ProductEntity(UUID manufacturerUUID, UUID hubUUID, String name, Integer stock, Integer price,
             Boolean isDelete) {
-        this.manufacturerUUID = manufacturerUUID;
-        this.hubUUID = hubUUID;
+        this.manufacturerUuid = manufacturerUUID;
+        this.hubUuuid = hubUUID;
         this.name = name;
         this.stock = stock;
         this.price = price;
