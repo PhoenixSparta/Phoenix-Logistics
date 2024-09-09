@@ -1,8 +1,8 @@
 package com.phoenix.logistics.core.user;
 
 import com.phoenix.logistics.core.enums.RoleType;
-import com.phoenix.logistics.core.user.dto.request.UserSignupRequest;
-import com.phoenix.logistics.core.user.service.UserService;
+import com.phoenix.logistics.core.user.api.controller.dto.request.UserSignupRequest;
+import com.phoenix.logistics.core.user.domain.UserService;
 import com.phoenix.logistics.storage.db.core.user.entity.User;
 import com.phoenix.logistics.storage.db.core.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,8 +48,11 @@ class UserServiceTest {
         });
 
         assertEquals("Username already exists.", exception.getMessage());
+
+        // validateUsername 호출 검증
         verify(userRepository, times(1)).existsByUsername("existingUser");
-        verify(userRepository, never()).save(any(User.class)); // 저장되지 않아야 함
+        // saveUser는 호출되지 않아야 함
+        verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
@@ -74,6 +77,8 @@ class UserServiceTest {
 
         // then: 결과 검증
         assertEquals("newUser", username);
+
+        // 각 메소드 호출 검증
         verify(userRepository, times(1)).existsByUsername("newUser");
         verify(passwordEncoder, times(1)).encode("password123");
         verify(userRepository, times(1)).save(any(User.class));
