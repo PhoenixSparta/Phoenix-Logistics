@@ -17,6 +17,11 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public String signup(UserSignupRequest request) {
+        // username 중복 확인
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException("Username already exists.");
+        }
+
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
