@@ -1,7 +1,7 @@
-package com.phoenix.logistics.core.user.controller;
+package com.phoenix.logistics.core.user.api.controller;
 
-import com.phoenix.logistics.core.user.dto.request.UserSignupRequest;
-import com.phoenix.logistics.core.user.service.UserService;
+import com.phoenix.logistics.core.user.api.controller.dto.request.UserSignupRequest;
+import com.phoenix.logistics.core.user.domain.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

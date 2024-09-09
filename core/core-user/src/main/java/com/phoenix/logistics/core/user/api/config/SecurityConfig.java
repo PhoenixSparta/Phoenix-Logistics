@@ -1,4 +1,4 @@
-package com.phoenix.logistics.core.user.config;
+package com.phoenix.logistics.core.user.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
