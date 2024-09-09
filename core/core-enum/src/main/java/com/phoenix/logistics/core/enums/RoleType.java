@@ -2,7 +2,7 @@ package com.phoenix.logistics.core.enums;
 
 public enum RoleType {
 
-    MASTER_ADMIN, HUB_MANAGER, DELIVERY_STAFF, // 기존 HUB_DELIVERY_AGENT에서 변경
-    VENDOR, MANUFACTURER // 기존 HUB_MANUFACTUR에서 변경
+    MASTER_ADMIN, HUB_MANAGER, DELIVERY_STAFF, VENDOR, MANUFACTURER, USER // 첫 회원가입 후 사용할
+                                                                          // 임시 권한
 
 }
