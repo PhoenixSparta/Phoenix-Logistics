@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     @Column(name = "username", length = 10, nullable = false)
     private String username; // 사용자 닉네임, NOT NULL, 4자 이상 10자 이하, 알파벳 소문자(a-z), 숫자(0-9)
 
-    @Column(name = "password", length = 15, nullable = false)
+    @Column(name = "password", length = 255, nullable = false)
     private String password; // 사용자 비밀번호, 8자 이상 15자 이하, 알파벳 대소문자, 숫자, 특수문자 포함
 
     @Enumerated(EnumType.STRING)
