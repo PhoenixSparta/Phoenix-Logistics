@@ -21,11 +21,13 @@ public class CoreDataSourceConfig {
         return new HikariConfig();
     }
 
-    @Bean
-    @Profile("!local")
-    public HikariDataSource coreDataSource(@Qualifier("coreHikariConfig") HikariConfig config) {
-        return new HikariDataSource(config);
-    }
+    // todo 로컬 외 설정 추가시 작성
+    // @Bean
+    // @Profile("!local")
+    // public HikariDataSource coreDataSource(@Qualifier("coreHikariConfig") HikariConfig
+    // config) {
+    // return new HikariDataSource(config);
+    // }
 
     @Bean
     @Profile("local")
