@@ -19,7 +19,9 @@ server:
 ---
 spring.config.activate.on-profile: local
 
-
+jwt:
+  secret:
+    key: ${jwt.secret.key}
 ---
 spring.config.activate.on-profile: local-dev
 
