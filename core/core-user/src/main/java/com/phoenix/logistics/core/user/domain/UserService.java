@@ -1,6 +1,7 @@
 package com.phoenix.logistics.core.user.domain;
 
 import com.phoenix.logistics.core.enums.RoleType;
+import com.phoenix.logistics.core.user.api.controller.dto.request.UserLoginRequest;
 import com.phoenix.logistics.core.user.api.controller.dto.request.UserSignupRequest;
 import com.phoenix.logistics.storage.db.core.user.entity.User;
 import com.phoenix.logistics.storage.db.core.user.repository.UserRepository;
@@ -24,6 +25,12 @@ public class UserService {
         return user.getUsername();
     }
 
+    public User login(UserLoginRequest request) throws IllegalAccessException {
+        User user = findUserByUsername(request.getUsername());
+        verifyPassword(request.getPassword(), user.getPassword());
+        return user;
+    }
+
     // 사용자명 중복 확인 메소드
     private void validateUsername(String username) {
         if (userRepository.existsByUsername(username)) {
@@ -44,6 +51,17 @@ public class UserService {
     // 데이터베이스에 사용자 저장 메소드
     private void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    private User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    private void verifyPassword(String rawPassword, String encodedPassword) throws IllegalAccessException {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
+        }
     }
 
 }

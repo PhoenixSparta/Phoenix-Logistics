@@ -1,10 +1,12 @@
 package com.phoenix.logistics.core.user;
 
 import com.phoenix.logistics.core.enums.RoleType;
+import com.phoenix.logistics.core.user.api.controller.dto.request.UserLoginRequest;
 import com.phoenix.logistics.core.user.api.controller.dto.request.UserSignupRequest;
 import com.phoenix.logistics.core.user.domain.UserService;
 import com.phoenix.logistics.storage.db.core.user.entity.User;
 import com.phoenix.logistics.storage.db.core.user.repository.UserRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -82,6 +84,76 @@ class UserServiceTest {
         verify(userRepository, times(1)).existsByUsername("newUser");
         verify(passwordEncoder, times(1)).encode("password123");
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void 로그인_성공() throws IllegalAccessException {
+        // given: 요청 DTO와 데이터베이스에 있는 사용자 설정
+        UserLoginRequest request = new UserLoginRequest();
+        request.setUsername("testUser");
+        request.setPassword("password123");
+
+        // 사용자 엔티티의 비밀번호는 암호화된 값이어야 함
+        User user = User.builder().username("testUser").password("encodedPassword").role(RoleType.USER).build();
+
+        // when: 사용자 이름으로 사용자 찾기
+        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
+        // passwordEncoder.matches() 호출 시 rawPassword와 encodedPassword 비교
+        when(passwordEncoder.matches("password123", "encodedPassword")).thenReturn(true);
+
+        // then: 로그인이 성공했는지 확인
+        User loginedUser = userService.login(request);
+        assertNotNull(loginedUser);
+        assertEquals("testUser", loginedUser.getUsername());
+
+        verify(userRepository, times(1)).findByUsername("testUser");
+        verify(passwordEncoder, times(1)).matches("password123", "encodedPassword");
+    }
+
+    @Test
+    void 로그인_실패_존재하지_않는_사용자() {
+        // given: 존재하지 않는 사용자 이름 설정
+        UserLoginRequest request = new UserLoginRequest();
+        request.setUsername("unknownUser");
+        request.setPassword("password123");
+
+        // when: 사용자 이름으로 찾지 못할 때
+        when(userRepository.findByUsername("unknownUser")).thenReturn(Optional.empty());
+
+        // then: IllegalArgumentException 발생 확인
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.login(request);
+        });
+        assertEquals("User not found", exception.getMessage());
+
+        verify(userRepository, times(1)).findByUsername("unknownUser");
+        verify(passwordEncoder, never()).matches(anyString(), anyString()); // 비밀번호 검증이
+                                                                            // 실행되지 않음
+    }
+
+    @Test
+    void 로그인_실패_비밀번호_불일치() {
+        // given: 요청 DTO와 데이터베이스에 있는 사용자 설정
+        UserLoginRequest request = new UserLoginRequest();
+        request.setUsername("testUser");
+        request.setPassword("wrongPassword");
+
+        // 실제 암호화된 비밀번호를 가정
+        User user = User.builder().username("testUser").password("encodedPassword").role(RoleType.USER).build();
+
+        // when: 사용자 이름으로 사용자 찾기
+        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
+        // 잘못된 비밀번호로 암호화된 비밀번호와 비교
+        when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
+
+        // then: IllegalAccessException 발생 확인
+        IllegalAccessException exception = assertThrows(IllegalAccessException.class, () -> {
+            userService.login(request);
+        });
+        assertEquals("비밀번호가 일치하지 않습니다.", exception.getMessage());
+
+        verify(userRepository, times(1)).findByUsername("testUser");
+        verify(passwordEncoder, times(1)).matches("wrongPassword", "encodedPassword");
     }
 
 }
