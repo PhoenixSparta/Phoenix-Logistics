@@ -56,7 +56,7 @@ class JwtAuthorizationFilterTest {
         claims.put("role", "USER");
 
         when(jwtUtil.resolveToken(request)).thenReturn(token);
-        when(jwtUtil.validateToken(token)).thenReturn(true);
+        when(jwtUtil.isTokenValid(token)).thenReturn(true);
         when(jwtUtil.getUserInfoFromToken(token)).thenReturn(claims);
 
         // 리플렉션을 사용해 protected 메소드 호출
@@ -81,7 +81,7 @@ class JwtAuthorizationFilterTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         when(jwtUtil.resolveToken(request)).thenReturn(token);
-        when(jwtUtil.validateToken(token)).thenReturn(false);
+        when(jwtUtil.isTokenValid(token)).thenReturn(false);
 
         // 리플렉션을 사용해 protected 메소드 호출
         Method method = JwtAuthorizationFilter.class.getDeclaredMethod("doFilterInternal", HttpServletRequest.class,
