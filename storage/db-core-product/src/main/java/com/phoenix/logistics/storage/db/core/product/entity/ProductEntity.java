@@ -44,10 +44,10 @@ public class ProductEntity extends BaseEntity {
     private Boolean isDelete;
 
     @Builder
-    public ProductEntity(UUID manufacturerUUID, UUID hubUUID, String name, Integer stock, Integer price,
+    public ProductEntity(UUID manufacturerUuid, UUID hubUuid, String name, Integer stock, Integer price,
             Boolean isDelete) {
-        this.manufacturerUuid = manufacturerUUID;
-        this.hubUuuid = hubUUID;
+        this.manufacturerUuid = manufacturerUuid;
+        this.hubUuuid = hubUuid;
         this.name = name;
         this.stock = stock;
         this.price = price;

@@ -2,9 +2,13 @@ package com.phoenix.logistics.core.product.domain.model;
 
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
+@Builder
 public class Product {
 
     private UUID uuid;
