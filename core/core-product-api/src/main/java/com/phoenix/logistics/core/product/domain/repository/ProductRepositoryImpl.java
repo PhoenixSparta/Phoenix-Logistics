@@ -22,7 +22,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             .name(product.getName())
             .stock(product.getStock())
             .price(product.getPrice())
-            .isDelete(true)
+            .isDelete(false)
             .build();
         jpaProductRepository.save(productEntity);
         // todo 모듈 분리 후 Entity to Domain 로직 작성후 생성된 Entity 기반 객체로 변경
