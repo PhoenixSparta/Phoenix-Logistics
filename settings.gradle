@@ -10,7 +10,6 @@ pluginManagement {
 rootProject.name = 'Phoenix-Logistics'
 
 include 'core:core-enum'
-include 'core:core-hub-enum'
 include 'core:core-api'
 include 'core:core-user'
 include 'core:core-product-api'
