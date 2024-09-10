@@ -2,9 +2,13 @@ package com.phoenix.logistics.core.user.api.config.jwt;
 
 import com.phoenix.logistics.core.enums.RoleType;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
@@ -73,9 +77,19 @@ public class JwtUtil {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         }
-        catch (Exception e) {
-            return false;
+        catch (SecurityException | MalformedJwtException | SignatureException e) {
+            log.error("Invalid JWT signature or token: {}", e.getMessage());
         }
+        catch (ExpiredJwtException e) {
+            log.error("Expired JWT token: {}", e.getMessage());
+        }
+        catch (UnsupportedJwtException e) {
+            log.error("Unsupported JWT token: {}", e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            log.error("JWT token is empty or invalid: {}", e.getMessage());
+        }
+        return false;
     }
 
 }
