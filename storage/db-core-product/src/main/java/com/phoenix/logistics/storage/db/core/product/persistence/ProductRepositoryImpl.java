@@ -1,10 +1,10 @@
-package com.phoenix.logistics.core.product.domain.repository;
+package com.phoenix.logistics.storage.db.core.product.persistence;
 
 import org.springframework.stereotype.Repository;
 
 import com.phoenix.logistics.core.product.domain.model.Product;
+import com.phoenix.logistics.core.product.domain.repository.ProductRepository;
 import com.phoenix.logistics.storage.db.core.product.entity.ProductEntity;
-import com.phoenix.logistics.storage.db.core.product.persistence.JpaProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
