@@ -1,6 +1,6 @@
 dependencies {
-    implementation project(':core:core-hub-enum')
-    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compileOnly project(":core:core-hub-domain")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'com.h2database:h2'
 
