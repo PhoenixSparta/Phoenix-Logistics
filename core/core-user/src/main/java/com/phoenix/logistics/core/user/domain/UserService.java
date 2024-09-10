@@ -1,6 +1,7 @@
 package com.phoenix.logistics.core.user.domain;
 
 import com.phoenix.logistics.core.enums.RoleType;
+import com.phoenix.logistics.core.user.api.config.jwt.CustomUserDetails;
 import com.phoenix.logistics.core.user.api.controller.dto.request.UserLoginRequest;
 import com.phoenix.logistics.core.user.api.controller.dto.request.UserSignupRequest;
 import com.phoenix.logistics.storage.db.core.user.entity.User;
@@ -29,6 +30,12 @@ public class UserService {
         User user = findUserByUsername(request.getUsername());
         verifyPassword(request.getPassword(), user.getPassword());
         return user;
+    }
+
+    public String getUserInfo(CustomUserDetails userDetails) {
+        User user = findUserByUsername(userDetails.getUsername());
+        return "User ID: " + user.getUserId() + ", Username: " + user.getUsername() + ", Role: " + user.getRole();
+
     }
 
     // 사용자명 중복 확인 메소드
