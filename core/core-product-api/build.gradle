@@ -4,7 +4,8 @@ jar.enabled = false
 dependencies {
 	implementation project(":support:monitoring")
 	implementation project(":support:logging")
-	implementation project(":storage:db-core-product")
+	runtimeOnly project(":storage:db-core-product")
+	implementation project(":core:core-product-domain")
 
 	testImplementation project(":tests:api-docs")
 
