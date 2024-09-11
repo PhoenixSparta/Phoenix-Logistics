@@ -32,7 +32,6 @@ public class UserService {
         return user;
     }
 
-
     // 사용자명 중복 확인 메소드
     private void validateUsername(String username) {
         if (userRepository.existsByUsername(username)) {
