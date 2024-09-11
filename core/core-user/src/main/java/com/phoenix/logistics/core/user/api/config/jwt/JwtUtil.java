@@ -32,29 +32,12 @@ public class JwtUtil {
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
     private String secretKey;
 
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
     private Key key;
 
     @PostConstruct
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
-    }
-
-    public String createToken(Long userId, String username, RoleType role) {
-        Date date = new Date();
-
-        // 토큰 만료시간 60분
-        long TOKEN_TIME = 60 * 60 * 1000;
-        return BEARER_PREFIX + Jwts.builder()
-            .setSubject(String.valueOf(userId))
-            .claim("username", username)
-            .claim("role", role)
-            .setExpiration(new Date(date.getTime() + TOKEN_TIME))
-            .setIssuedAt(date)
-            .signWith(key, signatureAlgorithm)
-            .compact();
     }
 
     // Authorization 헤더에서 JWT 토큰 추출

@@ -1,4 +1,4 @@
-package com.phoenix.logistics.core.user.api.controller.dto.request;
+package com.phoenix.logistics.core.auth.api.controller.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
