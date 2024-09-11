@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: core-apigateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:8081  # Auth Service? ???? URI
+          predicates:
+            - Path=/api/v1/auth/**       # /auth/**? ???? ??? auth Service? ???
+        - id: user-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/user/**
