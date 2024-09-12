@@ -9,6 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +35,7 @@ public class RedisServiceImplTest {
     }
 
     @Test
-    void testSetValue() {
+    void 값_저장_테스트() {
         String key = "testKey";
         String value = "testValue";
 
@@ -45,7 +47,7 @@ public class RedisServiceImplTest {
     }
 
     @Test
-    void testGetValue() {
+    void 값_조회_테스트() {
         String key = "testKey";
         String expectedValue = "testValue";
 
@@ -63,7 +65,7 @@ public class RedisServiceImplTest {
     }
 
     @Test
-    void testDeleteValue() {
+    void 값_삭제_테스트() {
         String key = "testKey";
 
         // 메서드 실행
@@ -74,7 +76,7 @@ public class RedisServiceImplTest {
     }
 
     @Test
-    void testHasKey() {
+    void 키_존재_여부_확인_테스트() {
         String key = "testKey";
         Boolean expectedValue = true;
 
@@ -89,6 +91,57 @@ public class RedisServiceImplTest {
 
         // hasKey 메서드가 한 번 호출되었는지 확인
         verify(redisTemplate, times(1)).hasKey(key);
+    }
+
+    @Test
+    void 만료시간과_함께_값_저장_테스트() {
+        String key = "testKey";
+        String value = "testValue";
+        long timeout = 60L; // 60초
+        TimeUnit unit = TimeUnit.SECONDS;
+
+        // 메서드 실행
+        redisService.setValueWithExpiry(key, value, timeout, unit);
+
+        // set 메서드가 timeout과 함께 호출되었는지 확인
+        verify(valueOperations, times(1)).set(key, value, timeout, unit);
+    }
+
+    @Test
+    void 키_만료시간_조회_테스트() {
+        String key = "testKey";
+        Long expectedExpireTime = 120L; // 남은 TTL 시간 120초
+
+        // Redis에서 TTL이 120초 남아 있다고 가정
+        when(redisTemplate.getExpire(key)).thenReturn(expectedExpireTime);
+
+        // 메서드 실행
+        Long result = redisService.getExpire(key);
+
+        // 결과가 예상한 TTL 값인지 확인
+        assertEquals(expectedExpireTime, result);
+
+        // getExpire 메서드가 한 번 호출되었는지 확인
+        verify(redisTemplate, times(1)).getExpire(key);
+    }
+
+    @Test
+    void 키_만료시간_설정_테스트() {
+        String key = "testKey";
+        long timeout = 120L; // 120초
+        TimeUnit unit = TimeUnit.SECONDS;
+
+        // Redis에서 TTL 설정이 성공적으로 되었다고 가정 (true 반환)
+        when(redisTemplate.expire(key, timeout, unit)).thenReturn(true);
+
+        // 메서드 실행
+        Boolean result = redisService.setExpire(key, timeout, unit);
+
+        // 결과가 true인지 확인
+        assertTrue(result);
+
+        // expire 메서드가 한 번 호출되었는지 확인
+        verify(redisTemplate, times(1)).expire(key, timeout, unit);
     }
 
 }
