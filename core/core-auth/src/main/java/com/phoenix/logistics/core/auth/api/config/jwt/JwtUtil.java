@@ -74,15 +74,4 @@ public class JwtUtil {
         }
     }
 
-    // 토큰이 유효한지 여부를 확인하는 메서드
-    public boolean isTokenValid(String token) {
-        try {
-            extractClaims(token); // Claims를 추출해서 유효한지 검증
-            return true;
-        }
-        catch (Exception e) {
-            return false; // 예외 발생 시 토큰이 유효하지 않음
-        }
-    }
-
 }
