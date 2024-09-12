@@ -1,6 +1,7 @@
 package com.phoenix.logistics.core.auth.api.config.jwt;
 
 import com.phoenix.logistics.core.enums.RoleType;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -29,25 +30,59 @@ public class JwtUtil {
 
     private Key key;
 
+    // secretKey 값을 Key 객체로 변환하는 작업을 초기화
     @PostConstruct
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
     }
 
+    // JWT 토큰 생성 메서드
     public String createToken(Long userId, String username, RoleType role) {
         Date date = new Date();
 
         // 토큰 만료시간 60분
         long TOKEN_TIME = 60 * 60 * 1000;
+
         return BEARER_PREFIX + Jwts.builder()
             .setSubject(String.valueOf(userId))
             .claim("username", username)
             .claim("role", role)
             .setExpiration(new Date(date.getTime() + TOKEN_TIME))
             .setIssuedAt(date)
-            .signWith(key, signatureAlgorithm)
+            .signWith(key, signatureAlgorithm) // Key 객체를 사용
             .compact();
+    }
+
+    // JWT 토큰에서 Claims를 추출하는 메서드
+    public Claims extractClaims(String token) {
+        try {
+            // "Bearer " 부분을 제거하고 순수 토큰을 추출
+            if (token.startsWith(BEARER_PREFIX)) {
+                token = token.substring(BEARER_PREFIX.length());
+            }
+
+            // JWT 파싱 및 검증
+            return Jwts.parserBuilder()
+                .setSigningKey(key) // Deprecated된 setSigningKey(String) 대신 key 객체 사용
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        }
+        catch (Exception e) {
+            throw new RuntimeException("JWT 검증 실패", e);
+        }
+    }
+
+    // 토큰이 유효한지 여부를 확인하는 메서드
+    public boolean isTokenValid(String token) {
+        try {
+            extractClaims(token); // Claims를 추출해서 유효한지 검증
+            return true;
+        }
+        catch (Exception e) {
+            return false; // 예외 발생 시 토큰이 유효하지 않음
+        }
     }
 
 }
