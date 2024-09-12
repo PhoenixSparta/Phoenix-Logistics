@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import com.phoenix.logistics.core.product.domain.model.Product;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,6 +54,17 @@ public class ProductEntity extends BaseEntity {
         this.stock = stock;
         this.price = price;
         this.isDelete = isDelete;
+    }
+
+    public Product toDomain() {
+        return Product.builder()
+            .uuid(uuid)
+            .manufacturerUuid(manufacturerUuid)
+            .hubUuid(hubUuuid)
+            .name(name)
+            .stock(stock)
+            .price(price)
+            .build();
     }
 
 }

@@ -4,8 +4,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.phoenix.logistics.core.product.domain.model.DomainPage;
 import com.phoenix.logistics.core.product.domain.model.Product;
 import com.phoenix.logistics.core.product.domain.repository.ProductRepository;
+import com.phoenix.logistics.core.product.support.response.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,11 @@ public class ProductService {
             .stock(stock)
             .build();
         return productRepository.save(product).getName();
+    }
+
+    public ApiResponse<DomainPage<Product>> searchProducts(String searchQuery, String sortBy, String direction,
+            Integer page, Integer size) {
+        return ApiResponse.success(productRepository.searchProducts(searchQuery, sortBy, direction, page, size));
     }
 
 }
