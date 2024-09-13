@@ -40,55 +40,62 @@ public class JwtAuthenticationFilter implements GlobalFilter {
         // JWT 토큰 추출
         String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // 토큰이 없거나 잘못된 경우 401 응답
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
+            return handleUnauthorized(exchange);
         }
 
         String token = authHeader.substring(7); // "Bearer " 제거
 
-        // 1. JWT Payload에서 필요한 정보를 추출
-        String payload = extractPayload(token); // Payload 추출 메서드 (Base64 decode)
+        // JWT Payload에서 필요한 정보를 추출
+        String payload = extractPayload(token);
 
-        // 2. Redis에서 인증 정보 조회
+        // Redis에서 인증 정보 조회
         String redisKey = "auth:" + payload;
         Map<String, Object> cachedClaims = (Map<String, Object>) redisService.getValue(redisKey);
 
+        // Redis 캐시가 있으면 처리
         if (cachedClaims != null) {
-            // Redis에 정보가 있으면 헤더에 추가하고 라우팅
-            exchange.getRequest()
-                .mutate()
-                .header("X-User-Id", cachedClaims.get("sub").toString())
-                .header("X-Role", cachedClaims.get("role").toString());
+            addHeadersToRequest(exchange, cachedClaims);
             return chain.filter(exchange);
         }
 
-        // 3. Redis에 정보가 없으면 Auth 서버로 JWT 검증 요청
+        // Auth 서버에서 검증 후 처리
+        return validateTokenWithAuthServer(token, redisKey, exchange, chain);
+    }
+
+    private void addHeadersToRequest(ServerWebExchange exchange, Map<String, Object> claims) {
+        exchange.getRequest()
+            .mutate()
+            .header("X-User-Id", claims.get("sub").toString())
+            .header("X-Role", claims.get("role").toString());
+    }
+
+    private Mono<Void> validateTokenWithAuthServer(String token, String redisKey, ServerWebExchange exchange,
+            GatewayFilterChain chain) {
         return webClientBuilder.build()
             .post()
             .uri("http://localhost:8081/api/v1/auth/validate-token")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
             .retrieve()
             .bodyToMono(Map.class)
-            .flatMap(responseBody -> {
-                // 응답으로부터 유저 정보 추출 후 Redis에 저장
-                redisService.setValueWithExpiry(redisKey, responseBody, 1, TimeUnit.HOURS); // 1시간
-                                                                                            // TTL
-                                                                                            // 설정
+            .flatMap(responseBody -> handleSuccess(exchange, redisKey, responseBody, chain))
+            .onErrorResume(e -> handleUnauthorized(exchange));
+    }
 
-                // 유저 정보를 헤더에 추가
-                exchange.getRequest()
-                    .mutate()
-                    .header("X-User-Id", responseBody.get("sub").toString())
-                    .header("X-Role", responseBody.get("role").toString());
+    private Mono<Void> handleSuccess(ServerWebExchange exchange, String redisKey, Map<String, Object> responseBody,
+            GatewayFilterChain chain) {
+        // 유저 정보 Redis에 저장
+        redisService.setValueWithExpiry(redisKey, responseBody, 1, TimeUnit.HOURS);
 
-                return chain.filter(exchange);
-            })
-            .onErrorResume(e -> {
-                // 검증 실패 시 401 반환
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return exchange.getResponse().setComplete();
-            });
+        // 헤더에 유저 정보 추가
+        addHeadersToRequest(exchange, responseBody);
+
+        // 체인 필터 처리
+        return chain.filter(exchange);
+    }
+
+    private Mono<Void> handleUnauthorized(ServerWebExchange exchange) {
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        return exchange.getResponse().setComplete();
     }
 
     // JWT의 Payload 추출 메서드 (Base64 디코딩)
