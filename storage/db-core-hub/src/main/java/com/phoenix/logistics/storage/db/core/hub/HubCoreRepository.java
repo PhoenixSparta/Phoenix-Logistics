@@ -2,7 +2,9 @@ package com.phoenix.logistics.storage.db.core.hub;
 
 import com.phoenix.logistics.core.hub.domain.Hub;
 import com.phoenix.logistics.core.hub.domain.HubRepository;
+import com.phoenix.logistics.core.hub.domain.HubResult;
 import com.phoenix.logistics.core.hub.domain.HubWithUuid;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,6 +19,11 @@ public class HubCoreRepository implements HubRepository {
     @Override
     public HubWithUuid add(Hub hub) {
         return hubJpaRepository.save(HubEntity.of(hub)).toHubWithUuid();
+    }
+
+    @Override
+    public HubResult read(UUID hubUuid) {
+        return hubJpaRepository.findByUuid(hubUuid).orElseThrow().toHubResult();
     }
 
 }
