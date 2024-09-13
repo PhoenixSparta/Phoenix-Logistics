@@ -16,6 +16,7 @@ server:
     threads:
       max: 600
       min-spare: 100
+  port: 19095
 
 ---
 spring.config.activate.on-profile: local
