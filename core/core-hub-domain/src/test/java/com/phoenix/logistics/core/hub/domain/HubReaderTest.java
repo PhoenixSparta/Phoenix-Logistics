@@ -13,49 +13,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class HubServiceTest {
+class HubReaderTest {
 
     @Mock
-    private HubRegister hubRegister;
+    private HubRepository hubRepository;
 
-    @Mock
     private HubReader hubReader;
-
-    private HubService hubService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        hubService = new HubService(hubRegister, hubReader);
-    }
-
-    @Test
-    void 허브를_등록한다() {
-        // given
-        int sequence = 1;
-        String name = "서울특별시 센터";
-        String city = "서울특별시";
-        String fullAddress = "서울특별시 송파구 송파대로 55";
-        double latitude = 37.4747005;
-        double longitude = 127.123397;
-        Hub hub = new Hub(sequence, name, city, fullAddress, latitude, longitude);
-
-        UUID hubUuid = UUID.randomUUID();
-        HubWithUuid hubWithUuid = new HubWithUuid(hubUuid, sequence, name, city, fullAddress, latitude, longitude);
-        when(hubRegister.register(hub)).thenReturn(hubWithUuid);
-
-        // when
-        HubWithUuid result = hubService.register(hub);
-
-        // then
-        assertThat(result).isNotNull();
-        assertThat(result.hubUuid()).isEqualTo(hubUuid);
-        assertThat(result.sequence()).isEqualTo(sequence);
-        assertThat(result.name()).isEqualTo(name);
-        assertThat(result.city()).isEqualTo(city);
-        assertThat(result.fullAddress()).isEqualTo(fullAddress);
-        assertThat(result.latitude()).isEqualTo(latitude);
-        assertThat(result.longitude()).isEqualTo(longitude);
+        hubReader = new HubReader(hubRepository);
     }
 
     @Test
@@ -73,10 +41,10 @@ class HubServiceTest {
         LocalDateTime updatedAt = LocalDateTime.now();
         HubResult hubResult = new HubResult(hubUuid, sequence, name, city, fullAddress, latitude, longitude,
                 new Timestamp(createdAt, updatedAt));
-        when(hubReader.read(hubUuid)).thenReturn(hubResult);
+        when(hubRepository.read(hubUuid)).thenReturn(hubResult);
 
         // when
-        HubResult result = hubService.read(hubUuid);
+        HubResult result = hubReader.read(hubUuid);
 
         // then
         assertThat(result).isNotNull();
