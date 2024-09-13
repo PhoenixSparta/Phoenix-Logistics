@@ -53,9 +53,9 @@ public class AuthControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("1", ((String) ((Map<String, Object>) response.getBody()).get("sub")));
-        assertEquals("testuser", ((String) ((Map<String, Object>) response.getBody()).get("username")));
-        assertEquals("USER", ((String) ((Map<String, Object>) response.getBody()).get("role")));
+        assertEquals("1", (((Map<String, Object>) response.getBody()).get("sub")));
+        assertEquals("testuser", (((Map<String, Object>) response.getBody()).get("username")));
+        assertEquals("USER", (((Map<String, Object>) response.getBody()).get("role")));
         verify(jwtUtil, times(1)).extractClaims("valid-token");
     }
 
