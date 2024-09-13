@@ -8,6 +8,8 @@ import com.phoenix.logistics.storage.db.core.user.entity.User;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +49,7 @@ public class AuthController {
 
     // 토큰 검증
     @PostMapping("/validate-token")
-    public ResponseEntity<Claims> validateToken(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Map<String, Object>> validateToken(@RequestHeader("Authorization") String token) {
         try {
             // "Bearer " 부분 제거
             String jwtToken = token.substring(7);
@@ -55,8 +57,16 @@ public class AuthController {
             // JWT 토큰을 검증하고 Claims 반환
             Claims claims = jwtUtil.extractClaims(jwtToken);
 
+            // Claims 내용을 Map으로 변환하여 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("sub", claims.getSubject());
+            response.put("username", claims.get("username"));
+            response.put("role", claims.get("role"));
+            response.put("exp", claims.getExpiration());
+            response.put("iat", claims.getIssuedAt());
+
             // 검증된 Claims 반환
-            return ResponseEntity.ok(claims);
+            return ResponseEntity.ok(response);
         }
         catch (Exception e) {
             // 검증 실패 시 401 Unauthorized 반환
