@@ -1,5 +1,7 @@
 package com.phoenix.logistics.storage.db.core.hub;
 
+import com.phoenix.logistics.core.hub.domain.Hub;
+import com.phoenix.logistics.core.hub.domain.HubWithUuid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,13 +39,23 @@ public class HubEntity extends BaseEntity {
     public HubEntity() {
     }
 
-    public HubEntity(int sequence, String name, String city, String fullAddress, double latitude, double longitude) {
+    HubEntity(int sequence, String name, String city, String fullAddress, double latitude, double longitude) {
         this.sequence = sequence;
         this.name = name;
         this.city = city;
         this.fullAddress = fullAddress;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public static HubEntity of(Hub hub) {
+        return new HubEntity(hub.sequence(), hub.name(), hub.city(), hub.fullAddress(), hub.latitude(),
+                hub.longitude());
+    }
+
+    public HubWithUuid toHubWithUuid() {
+        return new HubWithUuid(this.uuid, this.sequence, this.name, this.city, this.fullAddress, this.latitude,
+                this.longitude);
     }
 
     public UUID getUuid() {

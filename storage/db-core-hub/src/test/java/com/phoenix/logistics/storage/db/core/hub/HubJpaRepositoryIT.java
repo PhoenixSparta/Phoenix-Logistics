@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.phoenix.logistics.storage.db.CoreDbContextTest;
 import org.junit.jupiter.api.Test;
 
-class HubRepositoryIT extends CoreDbContextTest {
+class HubJpaRepositoryIT extends CoreDbContextTest {
 
-    private final HubRepository hubRepository;
+    private final HubJpaRepository hubJpaRepository;
 
-    public HubRepositoryIT(HubRepository hubRepository) {
-        this.hubRepository = hubRepository;
+    public HubJpaRepositoryIT(HubJpaRepository hubJpaRepository) {
+        this.hubJpaRepository = hubJpaRepository;
     }
 
     @Test
@@ -22,10 +22,11 @@ class HubRepositoryIT extends CoreDbContextTest {
         String fullAddress = "서울특별시 송파구 송파대로 55";
         double latitude = 37.4747005;
         double longitude = 127.123397;
-        HubEntity hub = hubRepository.save(new HubEntity(sequence, name, city, fullAddress, latitude, longitude));
+
+        HubEntity hub = hubJpaRepository.save(new HubEntity(sequence, name, city, fullAddress, latitude, longitude));
 
         // when
-        HubEntity addedHub = hubRepository.findByUuid(hub.getUuid())
+        HubEntity addedHub = hubJpaRepository.findByUuid(hub.getUuid())
             .orElseThrow(() -> new AssertionError("Hub not found"));
 
         // then
