@@ -1,4 +1,4 @@
-package com.phoenix.logistics.core.product.domain.model;
+package com.phoenix.logistics.support.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.phoenix.logistics.core.product.support.error;
+package com.phoenix.logistics.support.error;
 
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.http.HttpStatus;

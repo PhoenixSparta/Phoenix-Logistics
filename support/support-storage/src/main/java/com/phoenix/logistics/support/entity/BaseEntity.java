@@ -1,4 +1,4 @@
-package com.phoenix.logistics.storage.db.core.product.entity;
+package com.phoenix.logistics.support.entity;
 
 import java.time.LocalDateTime;
 

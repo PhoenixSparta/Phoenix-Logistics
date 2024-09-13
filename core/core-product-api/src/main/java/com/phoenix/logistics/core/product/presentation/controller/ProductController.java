@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.phoenix.logistics.core.product.application.service.ProductService;
-import com.phoenix.logistics.core.product.domain.model.DomainPage;
 import com.phoenix.logistics.core.product.domain.model.Product;
 import com.phoenix.logistics.core.product.presentation.controller.dto.request.CreateProductRequest;
 import com.phoenix.logistics.core.product.presentation.controller.dto.request.SearchProductsRequest;
-import com.phoenix.logistics.core.product.support.response.ApiResponse;
+import com.phoenix.logistics.support.model.DomainPage;
+import com.phoenix.logistics.support.response.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 

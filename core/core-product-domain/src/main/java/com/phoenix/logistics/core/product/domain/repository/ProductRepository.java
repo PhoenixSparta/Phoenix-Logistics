@@ -1,7 +1,7 @@
 package com.phoenix.logistics.core.product.domain.repository;
 
-import com.phoenix.logistics.core.product.domain.model.DomainPage;
 import com.phoenix.logistics.core.product.domain.model.Product;
+import com.phoenix.logistics.support.model.DomainPage;
 
 public interface ProductRepository {
 

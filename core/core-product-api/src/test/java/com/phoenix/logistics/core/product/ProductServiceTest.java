@@ -14,10 +14,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.phoenix.logistics.core.product.application.service.ProductService;
-import com.phoenix.logistics.core.product.domain.model.DomainPage;
 import com.phoenix.logistics.core.product.domain.model.Product;
 import com.phoenix.logistics.core.product.domain.repository.ProductRepository;
-import com.phoenix.logistics.core.product.support.response.ApiResponse;
+import com.phoenix.logistics.support.model.DomainPage;
+import com.phoenix.logistics.support.response.ApiResponse;
 
 public class ProductServiceTest {
 

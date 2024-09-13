@@ -4,10 +4,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.phoenix.logistics.core.product.domain.model.DomainPage;
 import com.phoenix.logistics.core.product.domain.model.Product;
 import com.phoenix.logistics.core.product.domain.repository.ProductRepository;
-import com.phoenix.logistics.core.product.support.response.ApiResponse;
+import com.phoenix.logistics.support.model.DomainPage;
+import com.phoenix.logistics.support.response.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
