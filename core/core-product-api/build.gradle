@@ -6,6 +6,7 @@ dependencies {
 	implementation project(":support:logging")
 	runtimeOnly project(":storage:db-core-product")
 	implementation project(":core:core-product-domain")
+	implementation project(":support:support-api")
 
 	testImplementation project(":tests:api-docs")
 

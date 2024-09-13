@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import com.phoenix.logistics.core.product.domain.model.Product;
+import com.phoenix.logistics.support.entity.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

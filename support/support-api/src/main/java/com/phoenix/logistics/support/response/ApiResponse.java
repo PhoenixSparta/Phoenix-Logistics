@@ -1,18 +1,14 @@
-package com.phoenix.logistics.core.product.support.response;
+package com.phoenix.logistics.support.response;
 
-import com.phoenix.logistics.core.product.support.error.ErrorMessage;
-import com.phoenix.logistics.core.product.support.error.ErrorType;
-
-import lombok.Getter;
+import com.phoenix.logistics.support.error.ErrorMessage;
+import com.phoenix.logistics.support.error.ErrorType;
 
 public class ApiResponse<S> {
 
-    @Getter
     private final ResultType result;
 
     private final S data;
 
-    @Getter
     private final ErrorMessage error;
 
     private ApiResponse(ResultType result, S data, ErrorMessage error) {
@@ -37,8 +33,16 @@ public class ApiResponse<S> {
         return new ApiResponse<>(ResultType.ERROR, null, new ErrorMessage(error, errorData));
     }
 
+    public ResultType getResult() {
+        return result;
+    }
+
     public S getData() {
         return data;
+    }
+
+    public ErrorMessage getError() {
+        return error;
     }
 
 }

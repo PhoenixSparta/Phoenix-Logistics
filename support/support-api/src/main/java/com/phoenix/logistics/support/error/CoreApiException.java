@@ -1,4 +1,4 @@
-package com.phoenix.logistics.core.product.support.error;
+package com.phoenix.logistics.support.error;
 
 public class CoreApiException extends RuntimeException {
 
