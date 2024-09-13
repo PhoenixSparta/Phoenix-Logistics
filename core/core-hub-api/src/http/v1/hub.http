@@ -1,0 +1,22 @@
+### Local Variable
+@host=http://localhost:19095
+@sequence=1
+@name="서울특별시 센터"
+@city="서울특별시"
+@fullAddress="서울특별시 송파구 송파대로 55"
+@latitude=37.4747005
+@longitude=127.123397
+
+###
+# @name 허브 등록
+POST {{host}}/api/v1/hubs
+Content-Type: application/json
+
+{
+  "sequence": {{sequence}},
+  "name": {{name}},
+  "city": {{city}},
+  "fullAddress": {{fullAddress}},
+  "latitude": {{latitude}},
+  "longitude": {{longitude}}
+}
