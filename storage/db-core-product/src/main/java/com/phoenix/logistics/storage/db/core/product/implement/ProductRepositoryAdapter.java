@@ -58,7 +58,7 @@ public class ProductRepositoryAdapter implements ProductRepository {
 		ProductEntity productEntity = jpaProductRepository.findById(modifiedProduct.getUuid())
 			.orElseThrow(EntityNotFoundException::new);
 		productEntity.update(modifiedProduct.getName(), modifiedProduct.getStock(), modifiedProduct.getPrice());
-		return jpaProductRepository.save(productEntity).toDomain();
+		return productEntity.toDomain();
 	}
 
 	@Override
