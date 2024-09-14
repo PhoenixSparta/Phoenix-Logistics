@@ -18,8 +18,6 @@ public class SecurityConfig {
 
     private final CustomAuthenticationFilter customAuthenticationFilter;
 
-
-
     public SecurityConfig(CustomAuthenticationFilter customAuthenticationFilter, RoleHierarchy roleHierarchy) {
         this.customAuthenticationFilter = customAuthenticationFilter;
     }
