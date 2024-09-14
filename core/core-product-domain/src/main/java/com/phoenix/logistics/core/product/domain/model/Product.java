@@ -23,4 +23,10 @@ public class Product {
 
     private Integer price;
 
+    public void modify(String name, Integer stock, Integer price) {
+        this.name = name;
+        this.stock = stock;
+        this.price = price;
+    }
+
 }

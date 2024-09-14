@@ -1,6 +1,4 @@
-package com.phoenix.logistics.core.product.presentation.controller.dto.request;
-
-import jakarta.validation.constraints.NotNull;
+package com.phoenix.logistics.core.product.api.controller.dto.request;
 
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
@@ -10,5 +8,7 @@ public record SearchProductsRequest(@DefaultValue(value = "") String searchQuery
 
         @DefaultValue(value = "desc") String direction,
 
-        @DefaultValue(value = "0") Integer page, @DefaultValue(value = "10") Integer pageSize) {
+        @DefaultValue(value = "0") Integer page, @DefaultValue(value = "10") Integer pageSize
+
+) {
 }
