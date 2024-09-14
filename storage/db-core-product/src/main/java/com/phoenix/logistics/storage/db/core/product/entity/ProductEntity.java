@@ -38,6 +38,9 @@ public class ProductEntity extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
     private Integer stock;
 
     @Column(nullable = false)
@@ -47,11 +50,12 @@ public class ProductEntity extends BaseEntity {
     private Boolean isDelete;
 
     @Builder
-    public ProductEntity(UUID manufacturerUuid, UUID hubUuid, String name, Integer stock, Integer price,
-            Boolean isDelete) {
+    public ProductEntity(UUID manufacturerUuid, UUID hubUuid, String name, String description, Integer stock,
+            Integer price, Boolean isDelete) {
         this.manufacturerUuid = manufacturerUuid;
         this.hubUuuid = hubUuid;
         this.name = name;
+        this.description = description;
         this.stock = stock;
         this.price = price;
         this.isDelete = isDelete;
@@ -63,13 +67,15 @@ public class ProductEntity extends BaseEntity {
             .manufacturerUuid(manufacturerUuid)
             .hubUuid(hubUuuid)
             .name(name)
+            .description(description)
             .stock(stock)
             .price(price)
             .build();
     }
 
-    public void update(String name, Integer stock, Integer price) {
+    public void update(String name, String description, Integer stock, Integer price) {
         this.name = name;
+        this.description = description;
         this.stock = stock;
         this.price = price;
     }

@@ -1,9 +1,7 @@
 package com.phoenix.logistics.core.product.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -44,6 +42,7 @@ public class ProductServiceTest {
     void createProduct_Success() {
         // Given
         String name = "Test Product";
+        String description = "Test Description";
         Integer price = 100;
         Integer stock = 50;
 
@@ -51,6 +50,7 @@ public class ProductServiceTest {
             .manufacturerUuid(manufacturerUuid)
             .hubUuid(hubUuid)
             .name(name)
+            .description(description)
             .price(price)
             .stock(stock)
             .build();
@@ -79,6 +79,7 @@ public class ProductServiceTest {
             .manufacturerUuid(UUID.randomUUID())
             .hubUuid(UUID.randomUUID())
             .name("Product 1")
+            .description("Product 1 description")
             .price(100)
             .stock(10)
             .build();
@@ -88,6 +89,7 @@ public class ProductServiceTest {
             .manufacturerUuid(UUID.randomUUID())
             .hubUuid(UUID.randomUUID())
             .name("Product 2")
+            .description("Product 2 description")
             .price(150)
             .stock(20)
             .build();
@@ -108,6 +110,8 @@ public class ProductServiceTest {
         assertEquals(2, response.getData().size());
         assertEquals("Product 1", response.getData().get(0).getName());
         assertEquals("Product 2", response.getData().get(1).getName());
+        assertEquals("Product 1 description", response.getData().get(0).getDescription());
+        assertEquals("Product 2 description", response.getData().get(1).getDescription());
         assertEquals(2L, response.getTotalItems());
         assertEquals(1, response.getTotalPages());
         assertEquals(page, response.getCurrentPage());
@@ -120,6 +124,7 @@ public class ProductServiceTest {
         // Given
         UUID productUuid = UUID.randomUUID();
         String updatedName = "Updated Product";
+        String updatedDescription = "Updated Description";
         Integer updatedStock = 100;
         Integer updatedPrice = 200;
 
@@ -129,6 +134,7 @@ public class ProductServiceTest {
             .manufacturerUuid(UUID.randomUUID())
             .hubUuid(UUID.randomUUID())
             .name("Original Product")
+            .description("Original Description")
             .stock(50)
             .price(100)
             .build();
@@ -139,6 +145,7 @@ public class ProductServiceTest {
             .manufacturerUuid(existingProduct.getManufacturerUuid())
             .hubUuid(existingProduct.getHubUuid())
             .name(updatedName)
+            .description(updatedDescription)
             .stock(updatedStock)
             .price(updatedPrice)
             .build();
@@ -148,12 +155,44 @@ public class ProductServiceTest {
         when(productRepository.updateProduct(any(Product.class))).thenReturn(modifiedProduct);
 
         // When
-        Product resultProduct = productService.modifyProduct(productUuid, updatedName, updatedStock, updatedPrice);
+        Product resultProduct = productService.modifyProduct(productUuid, updatedName, updatedDescription, updatedStock,
+                updatedPrice);
 
         // Then
         assertEquals(updatedName, resultProduct.getName());
+        assertEquals(updatedDescription, resultProduct.getDescription());
         assertEquals(updatedStock, resultProduct.getStock());
         assertEquals(updatedPrice, resultProduct.getPrice());
+    }
+
+    @Test
+    void getProduct_Success() {
+        // Given
+        UUID productUuid = UUID.randomUUID();
+
+        // 테스트용 Product 객체 생성
+        Product product = Product.builder()
+            .uuid(productUuid)
+            .manufacturerUuid(UUID.randomUUID())
+            .hubUuid(UUID.randomUUID())
+            .name("Sample Product")
+            .description("Sample description")
+            .stock(50)
+            .price(100)
+            .build();
+
+        // ProductRepository의 findById 메서드 모킹
+        when(productRepository.findById(productUuid)).thenReturn(product);
+
+        // When
+        Product resultProduct = productService.getProduct(productUuid);
+
+        // Then
+        assertEquals(productUuid, resultProduct.getUuid());
+        assertEquals("Sample Product", resultProduct.getName());
+        assertEquals("Sample description", resultProduct.getDescription());
+        assertEquals(50, resultProduct.getStock());
+        assertEquals(100, resultProduct.getPrice());
     }
 
 }
