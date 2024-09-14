@@ -1,13 +1,13 @@
-package com.phoenix.logistics.core.product.application.service;
+package com.phoenix.logistics.core.product.domain.service;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.phoenix.logistics.core.product.domain.model.Product;
 import com.phoenix.logistics.core.product.domain.repository.ProductRepository;
 import com.phoenix.logistics.support.model.DomainPage;
-import com.phoenix.logistics.support.response.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +28,16 @@ public class ProductService {
         return productRepository.save(product).getName();
     }
 
-    public ApiResponse<DomainPage<Product>> searchProducts(String searchQuery, String sortBy, String direction,
-            Integer page, Integer size) {
-        return ApiResponse.success(productRepository.searchProducts(searchQuery, sortBy, direction, page, size));
+    public DomainPage<Product> searchProducts(String searchQuery, String sortBy, String direction, Integer page,
+            Integer size) {
+        return productRepository.searchProducts(searchQuery, sortBy, direction, page, size);
+    }
+
+    @Transactional
+    public Product modifyProduct(UUID productUuid, String name, Integer stock, Integer price) {
+        Product targetProduct = productRepository.findById(productUuid);
+        targetProduct.modify(name, stock, price);
+        return productRepository.updateProduct(targetProduct);
     }
 
 }
