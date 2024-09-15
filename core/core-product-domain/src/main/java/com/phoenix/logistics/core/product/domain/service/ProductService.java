@@ -34,10 +34,14 @@ public class ProductService {
     }
 
     @Transactional
-    public Product modifyProduct(UUID productUuid, String name, Integer stock, Integer price) {
+    public Product modifyProduct(UUID productUuid, String name, String description, Integer stock, Integer price) {
         Product targetProduct = productRepository.findById(productUuid);
-        targetProduct.modify(name, stock, price);
+        targetProduct.modify(name, description, stock, price);
         return productRepository.updateProduct(targetProduct);
+    }
+
+    public Product getProduct(UUID productUuid) {
+        return productRepository.findById(productUuid);
     }
 
 }

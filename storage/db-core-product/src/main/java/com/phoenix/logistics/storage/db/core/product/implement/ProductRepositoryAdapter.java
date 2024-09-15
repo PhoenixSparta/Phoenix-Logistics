@@ -30,6 +30,7 @@ public class ProductRepositoryAdapter implements ProductRepository {
             .manufacturerUuid(product.getManufacturerUuid())
             .hubUuid(product.getHubUuid())
             .name(product.getName())
+            .description(product.getDescription())
             .stock(product.getStock())
             .price(product.getPrice())
             .isDelete(false)
@@ -57,7 +58,10 @@ public class ProductRepositoryAdapter implements ProductRepository {
     public Product updateProduct(Product modifiedProduct) {
         ProductEntity productEntity = jpaProductRepository.findById(modifiedProduct.getUuid())
             .orElseThrow(EntityNotFoundException::new);
-        productEntity.update(modifiedProduct.getName(), modifiedProduct.getStock(), modifiedProduct.getPrice());
+
+        productEntity.update(modifiedProduct.getName(), modifiedProduct.getDescription(), modifiedProduct.getStock(),
+                modifiedProduct.getPrice());
+
         return productEntity.toDomain();
     }
 

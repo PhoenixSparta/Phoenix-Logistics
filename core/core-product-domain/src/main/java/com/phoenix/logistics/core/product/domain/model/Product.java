@@ -19,12 +19,15 @@ public class Product {
 
     private String name;
 
+    private String description;
+
     private Integer stock;
 
     private Integer price;
 
-    public void modify(String name, Integer stock, Integer price) {
+    public void modify(String name, String description, Integer stock, Integer price) {
         this.name = name;
+        this.description = description;
         this.stock = stock;
         this.price = price;
     }
