@@ -44,8 +44,13 @@ public class ProductController {
     @PatchMapping("/{productUuid}")
     public ApiResponse<Product> modifyProduct(@PathVariable UUID productUuid,
             @RequestBody ModifyProductRequest request) {
-        return ApiResponse
-            .success(productService.modifyProduct(productUuid, request.name(), request.stock(), request.price()));
+        return ApiResponse.success(productService.modifyProduct(productUuid, request.name(), request.description(),
+                request.stock(), request.price()));
+    }
+
+    @GetMapping("/{productUuid}")
+    public ApiResponse<Product> getProduct(@PathVariable UUID productUuid) {
+        return ApiResponse.success(productService.getProduct(productUuid));
     }
 
 }
