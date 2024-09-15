@@ -33,5 +33,4 @@ include 'clients:client-example'
 include 'support:support-api'
 include 'support:support-domain'
 include 'support:support-storage'
-
-
+include 'support:support-authentication'
