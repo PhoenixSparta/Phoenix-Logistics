@@ -18,10 +18,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
-            .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/h2-console/**")
-                .permitAll() // H2 콘솔 경로 허용
-                .anyRequest()
-                .permitAll() // 모든 요청 허용 (테스트용)
+            .authorizeHttpRequests(
+                    authorizeRequests -> authorizeRequests.requestMatchers("/h2-console/**", "/api/v1/auth/**")
+                        .permitAll() // H2 콘솔 경로 허용
+                        .anyRequest()
+                        .permitAll() // 모든 요청 허용 (테스트용)
             )
             .headers(headers -> headers
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)) // H2
