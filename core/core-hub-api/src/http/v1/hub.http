@@ -20,3 +20,12 @@ Content-Type: application/json
   "latitude": {{latitude}},
   "longitude": {{longitude}}
 }
+
+> {%
+  client.global.set("hubUuid", response.body.data.hubUuid);
+%}
+
+###
+# @name 허브 조회
+GET {{host}}/api/v1/hubs/{{hubUuid}}
+Content-Type: application/json

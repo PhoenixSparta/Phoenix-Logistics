@@ -14,9 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phoenix.logistics.core.hub.api.controller.v1.request.HubRegistrationRequest;
 import com.phoenix.logistics.core.hub.domain.Hub;
+import com.phoenix.logistics.core.hub.domain.HubResult;
 import com.phoenix.logistics.core.hub.domain.HubService;
 import com.phoenix.logistics.core.hub.domain.HubWithUuid;
+import com.phoenix.logistics.core.hub.domain.Timestamp;
 import com.phoenix.logistics.test.api.RestDocsTest;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,6 +74,38 @@ class HubControllerTest extends RestDocsTest {
                             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("경도")),
                     responseFields(fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
                             fieldWithPath("data.hubUuid").type(JsonFieldType.STRING).description("허브 UUID"),
+                            fieldWithPath("error").type(JsonFieldType.NULL).ignored())));
+    }
+
+    @Test
+    void 허브_조회() {
+        // given
+        int sequence = 1;
+        String name = "서울특별시 센터";
+        String city = "서울특별시";
+        String fullAddress = "서울특별시 송파구 송파대로 55";
+        double latitude = 37.4747005;
+        double longitude = 127.123397;
+        LocalDateTime createdAt = LocalDateTime.now();
+        LocalDateTime updatedAt = LocalDateTime.now();
+        HubResult hubResult = new HubResult(hubUuid, sequence, name, city, fullAddress, latitude, longitude,
+                new Timestamp(createdAt, updatedAt));
+        when(hubService.read(any(UUID.class))).thenReturn(hubResult);
+
+        given().contentType("application/json")
+            .get("/api/v1/hubs/{hubUuid}", hubUuid.toString())
+            .then()
+            .status(HttpStatus.OK)
+            .apply(document("허브 조회", requestPreprocessor(), responsePreprocessor(),
+                    responseFields(fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
+                            fieldWithPath("data.hubUuid").type(JsonFieldType.STRING).description("허브 UUID"),
+                            fieldWithPath("data.name").type(JsonFieldType.STRING).description("허브명"),
+                            fieldWithPath("data.city").type(JsonFieldType.STRING).description("시도명"),
+                            fieldWithPath("data.fullAddress").type(JsonFieldType.STRING).description("허브 주소"),
+                            fieldWithPath("data.latitude").type(JsonFieldType.NUMBER).description("위도"),
+                            fieldWithPath("data.longitude").type(JsonFieldType.NUMBER).description("경도"),
+                            fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("허브 생성 시간"),
+                            fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("허브 수정 시간"),
                             fieldWithPath("error").type(JsonFieldType.NULL).ignored())));
     }
 

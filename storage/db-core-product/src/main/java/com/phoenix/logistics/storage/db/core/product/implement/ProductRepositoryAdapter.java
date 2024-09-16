@@ -1,5 +1,10 @@
 package com.phoenix.logistics.storage.db.core.product.implement;
 
+import java.util.UUID;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +30,7 @@ public class ProductRepositoryAdapter implements ProductRepository {
             .manufacturerUuid(product.getManufacturerUuid())
             .hubUuid(product.getHubUuid())
             .name(product.getName())
+            .description(product.getDescription())
             .stock(product.getStock())
             .price(product.getPrice())
             .isDelete(false)
@@ -45,6 +51,23 @@ public class ProductRepositoryAdapter implements ProductRepository {
         // spring-data-page -> custom page 매핑
         return DomainPage.of(productPage.getContent(), productPage.getTotalElements(), productPage.getTotalPages(),
                 productPage.getNumber(), productPage.getSize(), productPage.hasNext());
+    }
+
+    @Override
+    @Transactional
+    public Product updateProduct(Product modifiedProduct) {
+        ProductEntity productEntity = jpaProductRepository.findById(modifiedProduct.getUuid())
+            .orElseThrow(EntityNotFoundException::new);
+        productEntity.update(modifiedProduct.getName(), modifiedProduct.getDescription(), modifiedProduct.getStock(),
+                modifiedProduct.getPrice());
+        return productEntity.toDomain();
+    }
+
+    @Override
+    public Product findById(UUID uuid) {
+        return jpaProductRepository.findById(uuid)
+            .map(ProductEntity::toDomain)
+            .orElseThrow(EntityNotFoundException::new);
     }
 
 }
