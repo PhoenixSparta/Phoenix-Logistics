@@ -1,7 +1,6 @@
 package com.phoenix.logistics.core.user.domain;
 
 import com.phoenix.logistics.core.enums.RoleType;
-import com.phoenix.logistics.core.user.api.config.jwt.CustomUserDetails;
 
 import com.phoenix.logistics.core.user.api.controller.dto.UserRequestDto;
 import com.phoenix.logistics.core.user.api.controller.dto.UserResponseDto;
@@ -27,9 +26,9 @@ public class UserService {
         return new UserResponseDto(user.getUserId(), user.getUsername(), user.getPassword(), user.getRole());
     }
 
-    public String getUserInfo(CustomUserDetails userDetails) {
-        UserResponseDto user = findUserByUsername(userDetails.getUsername());
-        return "User ID: " + user.userId() + ", Username: " + user.username() + ", Role: " + user.role();
+    public String getUserInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Not Found User"));
+        return "User ID: " + user.getUserId() + ", Username: " + user.getUsername() + ", Role: " + user.getRole();
 
     }
 
