@@ -51,7 +51,7 @@ public class UserService {
     public String deleteUser(Long userId) {
         User user = getUserFromId(userId);
         user.softDelete();
-        return "User ID: " + user.getUserId() + "Soft Delete is complete";
+        return "User ID: " + user.getUserId() + " Soft Delete is complete";
     }
 
     private User getUserFromId(Long userId) {
