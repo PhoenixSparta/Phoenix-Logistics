@@ -1,10 +1,10 @@
 package com.phoenix.logistics.core.auth.api.controller;
 
+import com.phoenix.logistics.client.user.model.UserClientResult;
 import com.phoenix.logistics.core.auth.api.config.jwt.JwtUtil;
 import com.phoenix.logistics.core.auth.api.controller.dto.request.UserLoginRequest;
 import com.phoenix.logistics.core.auth.api.controller.dto.request.UserSignupRequest;
-import com.phoenix.logistics.core.auth.domain.UserService;
-import com.phoenix.logistics.storage.db.core.user.entity.User;
+import com.phoenix.logistics.core.auth.domain.AuthService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,14 +25,15 @@ public class AuthController {
 
     // 추후 Auth 서비스로 분리
 
-    private final UserService userService;
+    private final AuthService authService;
 
     private final JwtUtil jwtUtil;
 
     // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody @Valid UserSignupRequest request) {
-        return ResponseEntity.ok(userService.signup(request) + " registered successfully");
+        System.out.println("working");
+        return ResponseEntity.ok(authService.signup(request) + " registered successfully");
     }
 
     // 로그인
@@ -40,11 +41,11 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody @Valid UserLoginRequest request, HttpServletResponse response)
             throws IllegalAccessException {
 
-        User loginedUser = userService.login(request);
-        String token = jwtUtil.createToken(loginedUser.getUserId(), loginedUser.getUsername(), loginedUser.getRole());
+        UserClientResult loginedUser = authService.login(request);
+        String token = jwtUtil.createToken(loginedUser.id(), loginedUser.username(), loginedUser.role());
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        return ResponseEntity.ok().body(loginedUser.getRole().toString());
+        return ResponseEntity.ok().body(loginedUser.role().toString());
     }
 
     // 토큰 검증
