@@ -33,8 +33,6 @@ public class UserService {
 
     }
 
-
-
     // 사용자명으로 사용자 조회
     public UserResponseDto findUserByUsername(String username) {
         // 사용자 조회
@@ -60,4 +58,5 @@ public class UserService {
         return userRepository.findByUserIdAndIsDeleteFalse(userId)
             .orElseThrow(() -> new IllegalArgumentException("Not Found User or User is Deleted"));
     }
+
 }
