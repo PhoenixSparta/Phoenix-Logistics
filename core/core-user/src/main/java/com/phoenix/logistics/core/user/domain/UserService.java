@@ -6,6 +6,7 @@ import com.phoenix.logistics.core.user.api.controller.dto.UserRequestDto;
 import com.phoenix.logistics.core.user.api.controller.dto.UserResponseDto;
 import com.phoenix.logistics.storage.db.core.user.entity.User;
 import com.phoenix.logistics.storage.db.core.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -27,10 +28,12 @@ public class UserService {
     }
 
     public String getUserInfo(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Not Found User"));
+        User user = getUserFromId(userId);
         return "User ID: " + user.getUserId() + ", Username: " + user.getUsername() + ", Role: " + user.getRole();
 
     }
+
+
 
     // 사용자명으로 사용자 조회
     public UserResponseDto findUserByUsername(String username) {
@@ -46,4 +49,15 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
+    @Transactional
+    public String deleteUser(Long userId) {
+        User user = getUserFromId(userId);
+        user.softDelete();
+        return "User ID: " + user.getUserId() + "Soft Delete is complete";
+    }
+
+    private User getUserFromId(Long userId) {
+        return userRepository.findByUserIdAndIsDeleteFalse(userId)
+            .orElseThrow(() -> new IllegalArgumentException("Not Found User or User is Deleted"));
+    }
 }
