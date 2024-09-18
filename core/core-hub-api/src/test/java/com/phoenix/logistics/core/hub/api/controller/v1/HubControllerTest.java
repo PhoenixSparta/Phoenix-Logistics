@@ -99,6 +99,7 @@ class HubControllerTest extends RestDocsTest {
             .apply(document("허브 조회", requestPreprocessor(), responsePreprocessor(),
                     responseFields(fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
                             fieldWithPath("data.hubUuid").type(JsonFieldType.STRING).description("허브 UUID"),
+                            fieldWithPath("data.sequence").type(JsonFieldType.NUMBER).description("허브 순서"),
                             fieldWithPath("data.name").type(JsonFieldType.STRING).description("허브명"),
                             fieldWithPath("data.city").type(JsonFieldType.STRING).description("시도명"),
                             fieldWithPath("data.fullAddress").type(JsonFieldType.STRING).description("허브 주소"),
