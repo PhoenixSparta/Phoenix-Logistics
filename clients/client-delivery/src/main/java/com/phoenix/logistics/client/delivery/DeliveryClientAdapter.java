@@ -3,6 +3,8 @@ package com.phoenix.logistics.client.delivery;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
 
 import com.phoenix.logistics.client.delivery.dto.CreateDeliveryRequest;
@@ -23,7 +25,9 @@ public class DeliveryClientAdapter implements DeliveryClient {
             UUID destinationHubUuid) {
         CreateDeliveryRequest createDeliveryRequest = new CreateDeliveryRequest(manufacturerUuid, vendorUuid, orderUuid,
                 sourceHubUuid, destinationHubUuid);
-        return feignDeliveryClient.createDelivery(createDeliveryRequest);
+        UUID deliveryUuid = feignDeliveryClient.createDelivery(createDeliveryRequest).data().deliveryUuid();
+
+        return deliveryUuid;
     }
 
 }

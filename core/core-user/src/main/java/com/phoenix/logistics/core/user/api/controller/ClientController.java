@@ -27,7 +27,7 @@ public class ClientController {
 
     // 사용자명으로 사용자 조회
     @GetMapping("/{username}")
-    public ResponseEntity<UserResponseDto> findUserByUsername(@PathVariable String username) {
+    public ResponseEntity<UserResponseDto> findUserByUsername(@PathVariable(name = "username") String username) {
         UserResponseDto userResponse = userService.findUserByUsername(username);
         return ResponseEntity.ok(userResponse);
     }
