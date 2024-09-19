@@ -1,0 +1,25 @@
+### Local Variable
+@host=http://localhost:19096
+@fullAddress="서울특별시 송파구 송파대로 55"
+@recipientName="홍길동"
+@recipientSlackId="D07CY31SQHL"
+
+###
+# @name 배송 등록
+POST {{host}}/api/v1/delivery
+Content-Type: application/json
+
+{
+  "orderUuid": "{{$uuid}}",
+  "manufacturerUuid": "{{$uuid}}",
+  "vendorUuid": "{{$uuid}}",
+  "sourceHubUuid": "{{$uuid}}",
+  "destinationHubUuid": "{{$uuid}}",
+  "fullAddress": {{fullAddress}},
+  "recipientName": {{recipientName}},
+  "recipientSlackId": {{recipientSlackId}}
+}
+
+> {%
+  client.global.set("deliveryUuid", response.body.data.deliveryUuid);
+%}

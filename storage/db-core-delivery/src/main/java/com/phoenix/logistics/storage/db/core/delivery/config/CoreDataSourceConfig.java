@@ -1,8 +1,7 @@
-package com.phoenix.logistics.storage.db.core.config;
+package com.phoenix.logistics.storage.db.core.delivery.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.sql.SQLException;
 import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Qualifier;
