@@ -25,10 +25,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
-            .authorizeHttpRequests(authz -> authz.requestMatchers("/feign/**").permitAll().anyRequest().authenticated() // 모든
-                                                                                                                        // 요청은
-                                                                                                                        // 인증이
-                                                                                                                        // 필요
+            .authorizeHttpRequests(
+                    authz -> authz.requestMatchers("/feign/**", "/actuator/**").permitAll().anyRequest().authenticated() // 모든
+            // 요청은
+            // 인증이
+            // 필요
             )
             .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // 커스텀
                                                                                                       // 필터
