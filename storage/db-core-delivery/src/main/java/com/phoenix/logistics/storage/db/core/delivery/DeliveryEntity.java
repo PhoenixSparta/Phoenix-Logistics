@@ -1,11 +1,13 @@
 package com.phoenix.logistics.storage.db.core.delivery;
 
 import com.phoenix.logistics.core.delivery.domain.Delivery;
+import com.phoenix.logistics.core.delivery.domain.DeliveryResult;
 import com.phoenix.logistics.core.delivery.domain.DeliveryStaff;
 import com.phoenix.logistics.core.delivery.domain.DeliveryWithUuid;
 import com.phoenix.logistics.core.delivery.domain.Hub;
 import com.phoenix.logistics.core.delivery.domain.Order;
 import com.phoenix.logistics.core.delivery.domain.Recipient;
+import com.phoenix.logistics.core.delivery.domain.Timestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -81,6 +83,16 @@ public class DeliveryEntity extends BaseEntity {
                         new Hub(this.sourceHubUuid, this.destinationHubUuid),
                         new DeliveryStaff(this.hubDeliveryStaffUuid, this.companyDeliveryStaffUuid), this.fullAddress,
                         new Recipient(this.recipientName, this.recipientSlackId)));
+    }
+
+    public DeliveryResult toDeliveryResult() {
+        return new DeliveryResult(
+                new DeliveryWithUuid(this.uuid,
+                        new Delivery(new Order(this.orderUuid, this.manufacturerUuid, this.vendorUuid),
+                                new Hub(this.sourceHubUuid, this.destinationHubUuid),
+                                new DeliveryStaff(this.hubDeliveryStaffUuid, this.companyDeliveryStaffUuid),
+                                this.fullAddress, new Recipient(this.recipientName, this.recipientSlackId))),
+                new Timestamp(this.getCreatedAt(), this.getUpdatedAt()));
     }
 
     public UUID getUuid() {
