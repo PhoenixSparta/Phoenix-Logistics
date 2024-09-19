@@ -20,6 +20,10 @@ server:
       min-spare: 100
   port: 8082
 
+admin:
+  default:
+    password: ${password}
+
 
 ---
 spring.config.activate.on-profile: local

@@ -9,7 +9,7 @@ dependencies {
     implementation project(":support:support-authentication")
 
     //implementation project(":clients:client-example")
-    //testImplementation project(":tests:api-docs")
+    testImplementation project(":tests:api-docs")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
