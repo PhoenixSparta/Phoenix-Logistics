@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: core-product-api
-
-server:
-  port: 9090
