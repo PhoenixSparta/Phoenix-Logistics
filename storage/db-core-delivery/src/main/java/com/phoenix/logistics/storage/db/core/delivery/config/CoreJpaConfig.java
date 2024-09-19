@@ -1,4 +1,4 @@
-package com.phoenix.logistics.storage.db.core.config;
+package com.phoenix.logistics.storage.db.core.delivery.config;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
