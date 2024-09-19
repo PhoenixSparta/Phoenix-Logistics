@@ -10,4 +10,6 @@ public interface OrderRepository {
 
     Order findByOrderUuid(UUID orderUuid);
 
+    void setDelivery(UUID orderUuid, UUID deliveryUuid);
+
 }

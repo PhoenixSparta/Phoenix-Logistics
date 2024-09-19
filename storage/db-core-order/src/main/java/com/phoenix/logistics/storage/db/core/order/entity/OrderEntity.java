@@ -57,4 +57,8 @@ public class OrderEntity extends BaseEntity {
             .build();
     }
 
+    public void setDelivery(UUID deliveryUuid) {
+        this.deliveryUuid = deliveryUuid;
+    }
+
 }
