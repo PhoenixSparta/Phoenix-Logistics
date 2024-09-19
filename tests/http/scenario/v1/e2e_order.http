@@ -1,0 +1,173 @@
+### Local Variable
+@hubHost=http://localhost:19095
+@sourceHubSequence=1
+@sourceHubName="서울특별시 센터"
+@sourceHubCity="서울특별시"
+@sourceHubFullAddress="서울특별시 송파구 송파대로 55"
+@sourceHubLatitude=37.4747005
+@sourceHubLongitude=127.123397
+@destinationHubSequence=2
+@destinationHubName="경기 북부 센터"
+@destinationHubCity="경기도"
+@destinationHubFullAddress="경기도 고양시 덕양구 권율대로 570"
+@destinationHubLatitude=73.4747005
+@destinationHubLongitude=217.123397
+@productHost=http://localhost:9090
+@productName="플라스틱 가공품"
+@productPrice=300
+@productStock=1000
+@orderHost=http://localhost:9091
+@deliveryHost=http://localhost:19096
+@fullAddress="서울특별시 송파구 송파대로 55"
+@recipientName="홍길동"
+@recipientSlackId="D07CY31SQHL"
+@deliveringToHub="DELIVERING_TO_HUB"
+@arrivedAtHub="ARRIVED_AT_HUB"
+@deliveringToCompany="DELIVERING_TO_COMPANY"
+@completed="COMPLETED"
+@actualDuration1="PT1H30M"
+@actualDuration2="PT49M"
+@actualDistance1=120.5
+@actualDistance2=85.3
+
+###
+# @name 출발지 허브 등록
+POST {{hubHost}}/api/v1/hubs
+Content-Type: application/json
+
+{
+  "sequence": {{sourceHubSequence}},
+  "name": {{sourceHubName}},
+  "city": {{sourceHubCity}},
+  "fullAddress": {{sourceHubFullAddress}},
+  "latitude": {{sourceHubLatitude}},
+  "longitude": {{sourceHubLongitude}}
+}
+
+> {%
+  client.global.set("sourceHubUuid", response.body.data.hubUuid);
+%}
+
+###
+# @name 도착지 허브 등록
+POST {{hubHost}}/api/v1/hubs
+Content-Type: application/json
+
+{
+  "sequence": {{destinationHubSequence}},
+  "name": {{destinationHubName}},
+  "city": {{destinationHubCity}},
+  "fullAddress": {{destinationHubFullAddress}},
+  "latitude": {{destinationHubLatitude}},
+  "longitude": {{destinationHubLongitude}}
+}
+
+> {%
+  client.global.set("destinationHubUuid", response.body.data.hubUuid);
+%}
+
+###
+# @name 허브 목록 조회
+GET {{hubHost}}/api/v1/hubs?query=&searchBy=&cursor=&limit=10&sortKey=sequence&sort=ASC
+Content-Type: application/json
+
+###
+# @name 상품 등록
+POST {{productHost}}/api/v1/products
+Content-Type: application/json
+
+{
+  "manufacturerUuid": "{{$uuid}}",
+  "hubUuid": "{{sourceHubUuid}}",
+  "name": {{productName}},
+  "price": {{productPrice}},
+  "stock": {{productStock}}
+}
+
+###
+# @name 상품 검색
+GET {{productHost}}/api/v1/products
+Content-Type: application/json
+
+{
+  "searchQuery": "",
+  "sortBy": "createdAt",
+  "direction": "desc",
+  "page": 0,
+  "pageSize": 10
+}
+
+> {%
+  client.global.set("productUuid", response.body.data.data[0].uuid);
+%}
+
+###
+# @name 주문 요청
+POST {{orderHost}}/api/v1/orders
+Content-Type: application/json
+
+{
+  "manufacturerUuid": "{{$uuid}}",
+  "vendorUuid": "{{$uuid}}",
+  "fullAddress": {{fullAddress}},
+  "recipientName": {{recipientName}},
+  "recipientSlackId": {{recipientSlackId}},
+  "productOrderDtoList": [
+    {
+      "productUuid": "{{productUuid}}",
+      "amount": 500,
+      "price": 300
+    }
+  ]
+}
+
+> {%
+  client.global.set("deliveryUuid", response.body.data.deliveryUuid);
+  client.global.set("deliveryLogUuid", response.body.data.deliveryLogUuid);
+%}
+
+###
+# @name 배송 조회
+GET {{deliveryHost}}/api/v1/delivery/{{deliveryUuid}}
+Content-Type: application/json
+
+###
+# @name 배송 상태 변경 (허브 배송중)
+PUT {{deliveryHost}}/api/v1/delivery/logs/{{deliveryLogUuid}}/status
+Content-Type: application/json
+
+{
+  "currentStatus": {{deliveringToHub}}
+}
+
+###
+# @name 배송 경로 기록 (허브 도착)
+PUT {{deliveryHost}}/api/v1/delivery/logs/{{deliveryLogUuid}}
+Content-Type: application/json
+
+{
+  "actualDuration": {{actualDuration1}},
+  "actualDistance": {{actualDistance1}},
+  "currentStatus": {{arrivedAtHub}}
+}
+
+###
+# @name 배송 상태 변경 (업체 배송중)
+PUT {{deliveryHost}}/api/v1/delivery/logs/{{deliveryLogUuid}}/status
+Content-Type: application/json
+
+{
+  "currentStatus": {{deliveringToHub}}
+}
+
+###
+# @name 배송 경로 기록 (배송 완료)
+PUT {{deliveryHost}}/api/v1/delivery/logs/{{deliveryLogUuid}}
+Content-Type: application/json
+
+{
+  "actualDuration": {{actualDuration2}},
+  "actualDistance": {{actualDistance2}},
+  "currentStatus": {{completed}}
+}
+

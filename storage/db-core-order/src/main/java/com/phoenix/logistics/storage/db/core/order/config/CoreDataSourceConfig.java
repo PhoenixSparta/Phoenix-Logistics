@@ -1,16 +1,14 @@
 package com.phoenix.logistics.storage.db.core.order.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.SQLException;
-
 import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 public class CoreDataSourceConfig {
@@ -33,7 +31,7 @@ public class CoreDataSourceConfig {
     @Profile("local")
     public HikariDataSource localCoreDataSource(@Qualifier("coreHikariConfig") HikariConfig config)
             throws SQLException {
-        Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9096").start();
+        Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9097").start();
         return new HikariDataSource(config);
     }
 

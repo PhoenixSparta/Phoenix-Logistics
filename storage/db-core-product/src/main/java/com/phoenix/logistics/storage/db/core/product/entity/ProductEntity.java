@@ -1,17 +1,14 @@
 package com.phoenix.logistics.storage.db.core.product.entity;
 
-import java.util.UUID;
-
+import com.phoenix.logistics.core.product.domain.model.Product;
+import com.phoenix.logistics.support.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import com.phoenix.logistics.core.product.domain.model.Product;
-import com.phoenix.logistics.support.entity.BaseEntity;
-
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +34,6 @@ public class ProductEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)

@@ -4,7 +4,9 @@ import java.util.UUID;
 
 public record DeliveryResponseData(
 
-        UUID deliveryUuid
+        UUID deliveryUuid,
+
+        UUID deliveryLogUuid
 
 ) {
 }
