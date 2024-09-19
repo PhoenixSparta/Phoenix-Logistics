@@ -3,6 +3,14 @@
 @fullAddress="서울특별시 송파구 송파대로 55"
 @recipientName="홍길동"
 @recipientSlackId="D07CY31SQHL"
+@deliveringToHub="DELIVERING_TO_HUB"
+@arrivedAtHub="ARRIVED_AT_HUB"
+@deliveringToCompany="DELIVERING_TO_COMPANY"
+@completed="COMPLETED"
+@actualDuration1="PT1H30M"
+@actualDuration2="PT49M"
+@actualDistance1=120.5
+@actualDistance2=85.3
 
 ###
 # @name 배송 등록
@@ -34,3 +42,62 @@ Content-Type: application/json
 # @name 배송 로그 조회
 GET {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}
 Content-Type: application/json
+
+###
+# @name 배송 상태 변경 (허브 배송중)
+PUT {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}/status
+Content-Type: application/json
+
+{
+  "currentStatus": {{deliveringToHub}}
+}
+
+###
+# @name 배송 상태 변경 (허브 도착)
+PUT {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}/status
+Content-Type: application/json
+
+{
+  "currentStatus": {{arrivedAtHub}}
+}
+
+###
+# @name 배송 상태 변경 (업체 배송중)
+PUT {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}/status
+Content-Type: application/json
+
+{
+  "currentStatus": {{deliveringToCompany}}
+}
+
+###
+# @name 배송 상태 변경 (배송 완료)
+PUT {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}/status
+Content-Type: application/json
+
+{
+  "currentStatus": {{completed}}
+}
+
+###
+# @name 배송 로그 기록 (허브 도착)
+PUT {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}
+Content-Type: application/json
+
+{
+  "actualDuration": {{actualDuration1}},
+  "actualDistance": {{actualDistance1}},
+  "currentStatus": {{arrivedAtHub}}
+}
+
+###
+# @name 배송 로그 기록 (배송 완료)
+PUT {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}
+Content-Type: application/json
+
+{
+  "actualDuration": {{actualDuration2}},
+  "actualDistance": {{actualDistance2}},
+  "currentStatus": {{completed}}
+}
+
