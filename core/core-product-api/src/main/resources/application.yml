@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: core-product-api
+
+  profiles:
+    active: local
+
+  config:
+    import:
+      - monitoring.yml
+      - logging.yml
+      - db-core-product.yml
+  web.resources.add-mappings: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 9090
+
+---
+spring.config.activate.on-profile: local
+
+
+---
+spring.config.activate.on-profile: local-dev
+
+
+---
+spring.config.activate.on-profile: dev
+
+
+---
+spring.config.activate.on-profile: staging
+
+
+---
+spring.config.activate.on-profile: live

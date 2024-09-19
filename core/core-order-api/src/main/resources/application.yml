@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: core-order-api
+  profiles:
+    active: local
+
+  config:
+    import:
+      - monitoring.yml
+      - logging.yml
+      - db-core-order.yml
+      - client-delivery.yml
+  web.resources.add-mappings: false
+
+server:
+  port: 9091
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+---
+spring.config.activate.on-profile: local
+
+
+---
+spring.config.activate.on-profile: local-dev
+
+
+---
+spring.config.activate.on-profile: dev
+
+
+---
+spring.config.activate.on-profile: staging
+
+
+---
+spring.config.activate.on-profile: live

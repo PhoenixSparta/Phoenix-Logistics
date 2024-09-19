@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.phoenix.logistics.client.delivery.dto.CreateDeliveryRequest;
 
-@FeignClient(value = "delivery-api", url = "{delivery.api.url}")
+@FeignClient(value = "delivery-api", url = "${delivery.api.url}")
 public interface FeignDeliveryClient {
 
     @PostMapping("/api/v1/delivery")
