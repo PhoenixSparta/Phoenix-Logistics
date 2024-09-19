@@ -48,4 +48,8 @@ public class User extends BaseEntity {
         this.isDelete = true;
     }
 
+    public void setRole(RoleType newRole) {
+        this.role = newRole;
+    }
+
 }

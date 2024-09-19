@@ -7,6 +7,8 @@ import com.phoenix.logistics.core.user.api.controller.dto.UserResponseDto;
 import com.phoenix.logistics.storage.db.core.user.entity.User;
 import com.phoenix.logistics.storage.db.core.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -52,6 +54,30 @@ public class UserService {
         User user = getUserFromId(userId);
         user.softDelete();
         return "User ID: " + user.getUserId() + " Soft Delete is complete";
+    }
+
+    // 관리자 전용: 모든 사용자 조회
+    public List<UserResponseDto> getAllUsers() {
+        List<User> users = userRepository.findAllByIsDeleteFalse();
+        return users.stream()
+            .map(user -> new UserResponseDto(user.getUserId(), user.getUsername(), user.getPassword(), user.getRole()))
+            .collect(Collectors.toList());
+    }
+
+    // 관리자 전용: 사용자 권한 변경
+    @Transactional
+    public String changeUserRole(Long userId, RoleType newRole) {
+        User user = getUserFromId(userId);
+        user.setRole(newRole);
+        return "User ID: " + user.getUserId() + " Role changed to " + newRole;
+    }
+
+    // 관리자 전용: 사용자 검색
+    public List<UserResponseDto> searchUsers(String username) {
+        List<User> users = userRepository.findByUsernameContainingAndIsDeleteFalse(username);
+        return users.stream()
+            .map(user -> new UserResponseDto(user.getUserId(), user.getUsername(), user.getPassword(), user.getRole()))
+            .collect(Collectors.toList());
     }
 
     private User getUserFromId(Long userId) {
