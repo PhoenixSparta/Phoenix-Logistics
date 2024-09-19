@@ -10,4 +10,8 @@ public interface DeliveryLogRepository {
 
     DeliveryLogResult read(UUID deliveryLogUuid);
 
+    DeliveryLogResult updateDeliveryStatus(UUID deliveryLogUuid, DeliveryStatus deliveryStatus);
+
+    DeliveryLogResult update(UUID deliveryLogUuid, DeliveryRecord deliveryRecord);
+
 }

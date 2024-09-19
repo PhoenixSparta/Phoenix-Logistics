@@ -4,6 +4,8 @@ import com.phoenix.logistics.core.delivery.domain.DeliveryLog;
 import com.phoenix.logistics.core.delivery.domain.DeliveryLogRepository;
 import com.phoenix.logistics.core.delivery.domain.DeliveryLogResult;
 import com.phoenix.logistics.core.delivery.domain.DeliveryLogWithUuid;
+import com.phoenix.logistics.core.delivery.domain.DeliveryRecord;
+import com.phoenix.logistics.core.delivery.domain.DeliveryStatus;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +32,18 @@ public class DeliveryLogCoreRepository implements DeliveryLogRepository {
     @Override
     public DeliveryLogResult read(UUID deliveryLogUuid) {
         return deliveryLogJpaRepository.findByUuid(deliveryLogUuid).orElseThrow().toDeliveryLogResult();
+    }
+
+    @Override
+    public DeliveryLogResult updateDeliveryStatus(UUID deliveryLogUuid, DeliveryStatus deliveryStatus) {
+        DeliveryLogEntity deliveryLogEntity = deliveryLogJpaRepository.findByUuid(deliveryLogUuid).orElseThrow();
+        return deliveryLogEntity.updateCurrentStatus(deliveryStatus).toDeliveryLogResult();
+    }
+
+    @Override
+    public DeliveryLogResult update(UUID deliveryLogUuid, DeliveryRecord deliveryRecord) {
+        DeliveryLogEntity deliveryLogEntity = deliveryLogJpaRepository.findByUuid(deliveryLogUuid).orElseThrow();
+        return deliveryLogEntity.update(deliveryRecord).toDeliveryLogResult();
     }
 
 }

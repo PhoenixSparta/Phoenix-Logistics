@@ -5,6 +5,7 @@ import com.phoenix.logistics.core.delivery.domain.Delivery;
 import com.phoenix.logistics.core.delivery.domain.DeliveryLog;
 import com.phoenix.logistics.core.delivery.domain.DeliveryLogResult;
 import com.phoenix.logistics.core.delivery.domain.DeliveryLogWithUuid;
+import com.phoenix.logistics.core.delivery.domain.DeliveryRecord;
 import com.phoenix.logistics.core.delivery.domain.DeliveryStaff;
 import com.phoenix.logistics.core.delivery.domain.DeliveryStatus;
 import com.phoenix.logistics.core.delivery.domain.DeliveryWithUuid;
@@ -121,6 +122,18 @@ public class DeliveryLogEntity extends BaseEntity {
                                                 this.deliveryEntity.getRecipientSlackId()))),
                         new Link(this.actualDuration, this.actualDistance), new DeliveryStatus(this.currentStatus))),
                 new Timestamp(this.getCreatedAt(), this.getUpdatedAt()));
+    }
+
+    public DeliveryLogEntity updateCurrentStatus(DeliveryStatus deliveryStatus) {
+        this.currentStatus = deliveryStatus.currentStatus();
+        return this;
+    }
+
+    public DeliveryLogEntity update(DeliveryRecord deliveryRecord) {
+        this.actualDuration = deliveryRecord.actualDuration();
+        this.actualDistance = deliveryRecord.actualDistance();
+        this.currentStatus = deliveryRecord.deliveryStatus().currentStatus();
+        return this;
     }
 
     public UUID getUuid() {
