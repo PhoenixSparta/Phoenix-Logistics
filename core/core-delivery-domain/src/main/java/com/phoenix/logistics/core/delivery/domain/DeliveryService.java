@@ -15,7 +15,7 @@ public class DeliveryService {
         this.deliveryReader = deliveryReader;
     }
 
-    public DeliveryWithUuid register(Delivery delivery) {
+    public DeliveryLogWithUuid register(Delivery delivery) {
         return deliveryRegister.register(delivery);
     }
 

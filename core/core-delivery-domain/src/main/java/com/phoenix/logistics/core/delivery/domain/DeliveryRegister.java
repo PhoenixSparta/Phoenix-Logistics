@@ -16,12 +16,12 @@ public class DeliveryRegister {
     }
 
     @Transactional
-    public DeliveryWithUuid register(Delivery delivery) {
+    public DeliveryLogWithUuid register(Delivery delivery) {
         DeliveryWithUuid deliveryWithUuid = deliveryRepository.add(delivery);
         DeliveryLog deliveryLog = new DeliveryLog(1, deliveryWithUuid, new Link(null, 0),
                 new DeliveryStatus(CurrentStatus.PENDING));
-        deliveryLogAppender.append(deliveryLog);
-        return deliveryWithUuid;
+        DeliveryLogWithUuid deliveryLogWithUuid = deliveryLogAppender.append(deliveryLog);
+        return deliveryLogWithUuid;
     }
 
 }
