@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(value = "user-api", url = "${user.api.url}")
 public interface UserApi {
 
-    @PostMapping("/users")
+    @PostMapping("/feign/users")
     UserResponseDto createUser(@RequestBody UserRequestDto request);
 
-    @GetMapping("/users/{username}")
+    @GetMapping("/feign/users/{username}")
     UserResponseDto findUserByUsername(@PathVariable("username") String username);
 
-    @GetMapping("/users/exist/{username}")
+    @GetMapping("/feign/users/exist/{username}")
     Boolean existsByUsername(@PathVariable("username") String username);
 
 }

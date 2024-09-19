@@ -4,6 +4,7 @@ import com.phoenix.logistics.core.user.domain.UserService;
 import com.phoenix.logistics.support.authentication.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,13 @@ public class UserController {
     public String getUserInfo() {
         Long userId = SecurityUtil.getCurrentUserId();
         return userService.getUserInfo(userId);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping
+    public String deleteUser() {
+        Long userId = SecurityUtil.getCurrentUserId();
+        return userService.deleteUser(userId);
     }
 
 }
