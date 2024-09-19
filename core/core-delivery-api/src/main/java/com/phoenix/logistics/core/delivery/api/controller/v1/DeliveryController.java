@@ -4,9 +4,9 @@ import com.phoenix.logistics.core.delivery.api.controller.v1.request.DeliveryReg
 import com.phoenix.logistics.core.delivery.api.controller.v1.response.DeliveryRegistrationResponse;
 import com.phoenix.logistics.core.delivery.api.controller.v1.response.DeliveryResponse;
 import com.phoenix.logistics.core.delivery.api.support.response.ApiResponse;
+import com.phoenix.logistics.core.delivery.domain.DeliveryLogWithUuid;
 import com.phoenix.logistics.core.delivery.domain.DeliveryResult;
 import com.phoenix.logistics.core.delivery.domain.DeliveryService;
-import com.phoenix.logistics.core.delivery.domain.DeliveryWithUuid;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class DeliveryController {
     @PostMapping("/api/v1/delivery")
     public ApiResponse<DeliveryRegistrationResponse> registerDelivery(
             @RequestBody DeliveryRegistrationRequest request) {
-        DeliveryWithUuid result = deliveryService.register(request.toDelivery());
+        DeliveryLogWithUuid result = deliveryService.register(request.toDelivery());
         log.info("배송 등록 : {}", result);
         return ApiResponse.success(DeliveryRegistrationResponse.of(result));
     }

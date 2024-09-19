@@ -22,9 +22,15 @@ Content-Type: application/json
 
 > {%
   client.global.set("deliveryUuid", response.body.data.deliveryUuid);
+  client.global.set("deliveryLogUuid", response.body.data.deliveryLogUuid);
 %}
 
 ###
 # @name 배송 조회
 GET {{host}}/api/v1/delivery/{{deliveryUuid}}
+Content-Type: application/json
+
+###
+# @name 배송 로그 조회
+GET {{host}}/api/v1/delivery/logs/{{deliveryLogUuid}}
 Content-Type: application/json
