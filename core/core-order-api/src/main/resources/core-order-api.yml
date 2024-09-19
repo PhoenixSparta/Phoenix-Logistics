@@ -1,3 +1,6 @@
 spring:
   application:
     name: core-order-api
+
+server:
+  port: 9091

@@ -19,6 +19,7 @@ public class Order {
 
     private UUID vendorUuid;
 
+    @Setter
     private UUID deliveryUuid;
 
     private Long totalPrice;

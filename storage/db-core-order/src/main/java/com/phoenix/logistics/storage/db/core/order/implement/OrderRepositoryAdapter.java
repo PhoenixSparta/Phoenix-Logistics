@@ -5,6 +5,7 @@ import java.util.UUID;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.phoenix.logistics.core.product.domain.model.Order;
 import com.phoenix.logistics.core.product.domain.repository.OrderRepository;
@@ -33,6 +34,14 @@ public class OrderRepositoryAdapter implements OrderRepository {
     @Override
     public Order findByOrderUuid(UUID orderUuid) {
         return jpaOrderRepository.findById(orderUuid).orElseThrow(EntityNotFoundException::new).toDomain();
+    }
+
+    @Override
+    @Transactional
+    public void setDelivery(UUID orderUuid, UUID deliveryUuid) {
+        OrderEntity targetOrderEntity = jpaOrderRepository.findById(orderUuid)
+            .orElseThrow(EntityNotFoundException::new);
+        targetOrderEntity.setDelivery(deliveryUuid);
     }
 
 }
